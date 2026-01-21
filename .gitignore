@@ -1,0 +1,62 @@
+# Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ
+/.idea/
+/*.iml
+/out/
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+
+# VS Code
+/.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Build result directories
+build/
+target/
+
+# Environment / credentials
+.env
+*.env
+secrets.properties
+application-secrets.yml
+
+# local uploads and generated images
+uploads/
+uploads/**
+
+# files created by the OS
+desktop.ini
+
+# Test reports
+/surefire-reports
+/jacoco.exec
+
+# Node (if front-end present)
+node_modules/
+
+# IDEA misc
+/.idea
+*.iml
+
+# MapStruct generated sources (optional; usually you keep them)
+/target/generated-sources/
+
+# macOS Spotlight
+.AppleDouble
+.LSOverride
+
+# temp files
+*.tmp
+*.swp
