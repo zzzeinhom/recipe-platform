@@ -13,12 +13,13 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface UserMapper {
-
+    @Mapping(target = "role", expression = "java(user.getRole().name())")
     UserProfileResponse toUserProfileResponse(User user);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "username", ignore = true)
-    @Mapping(target = "email", ignore = true) // optionally allow admin to change email via separate flow
+    @Mapping(target = "email", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "profileImage", ignore = true)
     void updateUserFromRequest(UpdateUserProfileRequest request, @MappingTarget User user);
 }
