@@ -5,6 +5,7 @@ import com.recipesharing.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +28,7 @@ public class SecurityConfig {
     ) throws Exception {
 
         http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -45,6 +47,12 @@ public class SecurityConfig {
 
                         // public recipes
                         .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
+
+                        //public recipe images
+                        .requestMatchers("/files/recipes/**").permitAll()
+
+                        //public user avatars
+                        .requestMatchers("/files/avatars/**").permitAll()
 
                         // everything else
                         .anyRequest().authenticated()
