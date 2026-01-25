@@ -25,6 +25,12 @@ public interface RecipeMapper {
     Recipe toRecipe(CreateRecipeRequest request);
 
     @Mapping(source = "chef.username", target = "chefUsername")
+    @Mapping(target = "labels", expression =
+            "java(recipe.getLabels().stream()" +
+                    ".map(l -> l.getName()).toList())")
+    @Mapping(target = "ingredients", expression =
+            "java(recipe.getIngredients().stream()" +
+                    ".map(i -> toIngredientResponse(i)).toList())")
     RecipeResponse toRecipeResponse(Recipe recipe);
 
     @Mapping(source = "chef.username", target = "chefUsername")
@@ -32,7 +38,6 @@ public interface RecipeMapper {
     
     Ingredient toIngredient(CreateIngredientRequest request);
     
-    @Mapping(source = "recipe.id", target = "recipeId")
     IngredientResponse toIngredientResponse(Ingredient ingredient);
     
 
@@ -41,6 +46,7 @@ public interface RecipeMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "chef", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "labels", ignore = true)
     void updateRecipeFromRequest(
             UpdateRecipeRequest request,
             @MappingTarget Recipe recipe

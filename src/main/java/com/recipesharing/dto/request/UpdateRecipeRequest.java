@@ -37,6 +37,5 @@ public class UpdateRecipeRequest {
     private Integer servings;
 
     private String difficulty;
-    private String imageUrl;
-    private String thumbnailUrl;}
+}
 

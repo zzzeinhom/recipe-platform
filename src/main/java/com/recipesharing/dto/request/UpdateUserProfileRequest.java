@@ -12,7 +12,4 @@ public class UpdateUserProfileRequest {
 
     @Size(max = 500)
     private String bio;
-
-    @Size(max = 255)
-    private String profileImage;
 }
