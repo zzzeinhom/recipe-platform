@@ -9,6 +9,11 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecificationExecutor<Recipe> {
+    @Query("""
+    select avg(rating.rating)
+    from Rating rating
+    where rating.recipe.id = :recipeId
+""")
     Double findAverageRatingById(Long recipeId);
 
     Long countRatingsById(Long recipeId);

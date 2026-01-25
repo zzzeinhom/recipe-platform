@@ -3,6 +3,7 @@ package com.recipesharing.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +25,7 @@ public class RecipeView {
     private User user;
 
     @ManyToOne
+    @OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
     private Recipe recipe;
 
     private LocalDateTime viewedAt;

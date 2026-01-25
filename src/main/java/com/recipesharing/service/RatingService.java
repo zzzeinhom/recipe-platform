@@ -47,7 +47,6 @@ public class RatingService {
 
         Rating rating = ratingMapper.toRating(request);
         rating.setUser(user);
-        rating.setRecipe(recipe);
 
         Rating saved = ratingRepository.save(rating);
 

@@ -1,9 +1,8 @@
 package com.recipesharing.util;
 
 import com.recipesharing.entity.Recipe;
-import com.recipesharing.service.FileStorageService;
+import com.recipesharing.entity.User;
 import com.recipesharing.service.LocalFileStorageService;
-import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,18 @@ public class ImageUtil {
             }
         } catch (Exception e) {
             logger.warn("Failed to cleanup recipe image files for recipe id {}: {}", recipe.getId(), e.getMessage());
+        }
+    }
+
+    public void cleanupUserImageFiles(User user) {
+        String imageUrl = user.getProfileImage();
+
+        try {
+            if (imageUrl != null && !imageUrl.isBlank()) {
+                fileStorageService.delete(imageUrl);
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to cleanup recipe image files for recipe id {}: {}", user.getId(), e.getMessage());
         }
     }
 }

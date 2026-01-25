@@ -5,12 +5,10 @@ import com.recipesharing.dto.request.CreateRecipeRequest;
 import com.recipesharing.dto.request.UpdateRecipeRequest;
 import com.recipesharing.dto.response.RecipeListResponse;
 import com.recipesharing.dto.response.RecipeResponse;
-import com.recipesharing.entity.Recipe;
-import com.recipesharing.entity.RecipeDifficulty;
-import com.recipesharing.entity.RecipeView;
-import com.recipesharing.entity.User;
+import com.recipesharing.entity.*;
 import com.recipesharing.exception.ResourceNotFoundException;
 import com.recipesharing.exception.UnauthorizedException;
+import com.recipesharing.repository.FavoriteRepository;
 import com.recipesharing.repository.RecipeRepository;
 import com.recipesharing.repository.RecipeViewRepository;
 import com.recipesharing.repository.specification.RecipeSpecification;
@@ -28,17 +26,19 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final RecipeViewRepository recipeViewRepository;
+    private final FavoriteRepository favoriteRepository;
     private final RecipeMapper recipeMapper;
     private final ValidationUti validationUti;
     private final RecipeStatisticsService recipeStatisticsService;
 
     public RecipeService(
-            RecipeRepository recipeRepository, RecipeViewRepository recipeViewRepository,
+            RecipeRepository recipeRepository, RecipeViewRepository recipeViewRepository, FavoriteRepository favoriteRepository,
             RecipeMapper recipeMapper,
             ValidationUti validationUti, RecipeStatisticsService recipeStatisticsService
     ) {
         this.recipeRepository = recipeRepository;
         this.recipeViewRepository = recipeViewRepository;
+        this.favoriteRepository = favoriteRepository;
         this.recipeMapper = recipeMapper;
         this.validationUti = validationUti;
         this.recipeStatisticsService = recipeStatisticsService;
@@ -61,7 +61,7 @@ public class RecipeService {
     // READ
     // =====================================================
 
-    @Transactional(readOnly = true)
+    @Transactional()
     public RecipeResponse getRecipeById(Long id, User currentUser) {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() ->
@@ -79,7 +79,11 @@ public class RecipeService {
             recipeStatisticsService.incrementViews(id);
         }
 
-        return recipeMapper.toRecipeResponse(recipe);
+        RecipeResponse response = recipeMapper.toRecipeResponse(recipe);
+        boolean isFavorite = favoriteRepository.existsByUserAndRecipe(currentUser, recipe);
+        response.setIsFavorite(isFavorite);
+
+        return response;
     }
 
     @Transactional(readOnly = true)
